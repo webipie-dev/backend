@@ -1,1 +1,4 @@
 stores-service/node_modules
+products-service/node_modules
+orders-service/node_modules
+users-service/node_modules
