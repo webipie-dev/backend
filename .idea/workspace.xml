@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c71a6534-7b43-46d6-a042-cfa5a91a7e8a" name="Default Changelist" comment="" />
+    <list default="true" id="c71a6534-7b43-46d6-a042-cfa5a91a7e8a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/orders-service/src/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/orders-service/src/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/products-service/src/app.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/products-service/src/app.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stores-service/src/app.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/stores-service/src/app.controller.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1rA0ulR18UpKp2c21A9LiuStPse" />
   <component name="ProjectViewState">
@@ -19,6 +27,7 @@
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.2.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -30,10 +39,29 @@
       <option name="presentableId" value="Default" />
       <updated>1618403812219</updated>
       <workItem from="1618403813305" duration="557000" />
+      <workItem from="1618925417950" duration="646000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1515" height="210" key="GridCell.Tab.0.bottom" timestamp="1618925876263">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1515" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1618925876263" />
+    <state width="1515" height="210" key="GridCell.Tab.0.center" timestamp="1618925876263">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1515" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1618925876263" />
+    <state width="1515" height="210" key="GridCell.Tab.0.left" timestamp="1618925876262">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1515" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1618925876262" />
+    <state width="1515" height="210" key="GridCell.Tab.0.right" timestamp="1618925876263">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1515" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1618925876263" />
   </component>
 </project>
