@@ -46,7 +46,7 @@ export class StoreController {
     @Param('id') id: string,
     @Body() updateStoreDto: UpdateStoreDto,
   ): string {
-    return `id: ${id} - updates: ${updateStoreDto}`;
+    return `--id: ${id} - updates: ${updateStoreDto}`;
   }
 
   @Delete('/delete')
