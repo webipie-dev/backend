@@ -33,7 +33,7 @@ export class StoreController {
 
   @Get('/all/urls')
   getStoreUrls(): string {
-    return 'store urls';
+    return 'store cc urls';
   }
 
   @Post('')
