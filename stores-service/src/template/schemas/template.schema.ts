@@ -1,12 +1,7 @@
 import * as mongoose from 'mongoose';
-import { Template } from '../interfaces/template.interface';
-import { CreateTemplateDto } from '../dto/create-template.dto';
+import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 
-/**
- * TemplateSchema schema
- * @constructor Template
- */
-export const TemplateSchema = new mongoose.Schema(
+const TemplateSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     header: {
@@ -30,3 +25,7 @@ export const TemplateSchema = new mongoose.Schema(
     },
   },
 );
+
+TemplateSchema.plugin(softDeletePlugin);
+
+export { TemplateSchema };
