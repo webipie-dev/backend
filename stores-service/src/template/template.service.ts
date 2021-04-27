@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Template } from './interfaces/template.interface';
 import { CreateTemplateDto } from './dto/create-template.dto';
-import { Model } from 'mongoose';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 
 @Injectable()
 export class TemplateService {
   constructor(
-    @InjectModel('Template') private readonly templateModel: Model<Template>,
+    @InjectModel('Template')
+    private readonly templateModel: SoftDeleteModel<Template>,
   ) {}
 
   async getAllTemplates(): Promise<Template[]> {
@@ -29,5 +30,17 @@ export class TemplateService {
 
   async deleteTemplateById(id: string): Promise<Template> {
     return this.templateModel.findByIdAndDelete(id);
+  }
+
+  async softDeleteTemplateById(id: string): Promise<Template> {
+    return this.templateModel.softDelete(id);
+  }
+
+  async restoreTemplateById(id: string): Promise<Template> {
+    return this.templateModel.restore(id);
+  }
+
+  async getDeletedTemplates(): Promise<Template[]> {
+    return this.templateModel.findDeleted();
   }
 }
