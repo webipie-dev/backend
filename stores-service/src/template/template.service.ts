@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Template } from './interfaces/template.interface';
 import { CreateTemplateDto } from './dto/create-template.dto';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
+import { UpdateTemplateDto } from './dto/update-template.dto';
 
 @Injectable()
 export class TemplateService {
@@ -11,17 +12,37 @@ export class TemplateService {
     private readonly templateModel: SoftDeleteModel<Template>,
   ) {}
 
-  async getAllTemplates(): Promise<Template[]> {
-    return this.templateModel.find();
+  async getAllTemplates(filters: Record<string, unknown>): Promise<Template[]> {
+    console.log(filters);
+    return this.templateModel.find(filters);
   }
 
   async getOneTemplate(id: string): Promise<Template> {
     return this.templateModel.findById(id);
   }
 
+  async getDeletedTemplates(): Promise<Template[]> {
+    return this.templateModel.findDeleted();
+  }
+
   async addOneTemplate(templateDTO: CreateTemplateDto): Promise<Template> {
     const template = await new this.templateModel(templateDTO);
     return template.save();
+  }
+
+  async editOneTemplate(
+    id: string,
+    templateDTO: UpdateTemplateDto,
+  ): Promise<Template> {
+    const template = await this.templateModel.findById(id);
+    // verify if it exists
+
+    const updatedTemplate = await this.templateModel.findByIdAndUpdate(
+      id,
+      templateDTO,
+      { new: true },
+    );
+    return updatedTemplate;
   }
 
   async deleteAllTemplates(): Promise<Record<string, unknown>> {
@@ -38,9 +59,5 @@ export class TemplateService {
 
   async restoreTemplateById(id: string): Promise<Template> {
     return this.templateModel.restore(id);
-  }
-
-  async getDeletedTemplates(): Promise<Template[]> {
-    return this.templateModel.findDeleted();
   }
 }

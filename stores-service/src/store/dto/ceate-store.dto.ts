@@ -1,6 +1,26 @@
+import { IsMongoId, IsNotEmpty, ValidationArguments } from 'class-validator';
+import { isRequired, isNotMongoId } from '../error/error-messages';
+
 export class CreateStoreDto {
+  @IsNotEmpty({
+    message: (validationData: ValidationArguments) =>
+      isRequired(validationData.property),
+  })
   readonly name: string;
+
+  @IsNotEmpty({
+    message: (validationData: ValidationArguments) =>
+      isRequired(validationData.property),
+  })
   readonly type: string;
-  readonly templateId: string;
-  readonly userId: string;
+
+  @IsNotEmpty({
+    message: (validationData: ValidationArguments) =>
+      isRequired(validationData.property),
+  })
+  @IsMongoId({
+    message: (validationData: ValidationArguments) =>
+      isNotMongoId(validationData.property),
+  })
+  template: string;
 }

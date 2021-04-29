@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { TemplateService } from './template.service';
 import { Template } from './interfaces/template.interface';
@@ -15,10 +16,9 @@ import { UpdateTemplateDto } from './dto/update-template.dto';
 @Controller('template')
 export class TemplateController {
   constructor(private readonly templateService: TemplateService) {}
-
   @Get('')
-  async getAllTemplates(): Promise<Template[]> {
-    return await this.templateService.getAllTemplates();
+  async getAllTemplates(@Query() query): Promise<Template[]> {
+    return await this.templateService.getAllTemplates(query);
   }
 
   @Get('/:id')
@@ -34,11 +34,11 @@ export class TemplateController {
   }
 
   @Patch('/:id')
-  editOneTemplate(
+  async editOneTemplate(
     @Param('id') id: string,
     @Body() updateTemplateDto: UpdateTemplateDto,
-  ): string {
-    return `--id: ${id} - updates: ${updateTemplateDto}`;
+  ): Promise<Template> {
+    return await this.templateService.editOneTemplate(id, updateTemplateDto);
   }
 
   @Delete('/delete')

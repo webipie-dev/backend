@@ -1,8 +1,6 @@
 import * as mongoose from 'mongoose';
 
 export interface Template extends mongoose.Document {
-  restore();
-  softDelete(): any;
   name: string;
   header: {
     img: string;
