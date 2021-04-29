@@ -1,10 +1,31 @@
 import * as mongoose from 'mongoose';
+import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
+import { TemplateSchema } from '../../template/schemas/template.schema';
 
-export const StoreSchema = new mongoose.Schema(
+const ContactSchema = new mongoose.Schema({
+  phoneNumber: { type: String },
+  email: { type: String },
+  facebookPage: { type: String },
+  instagramPage: { type: String },
+  location: { type: String },
+});
+
+const StoreSchema = new mongoose.Schema(
   {
-    name: String,
-    type: String,
-    templateId: String,
+    name: { type: String },
+    type: { type: String },
+    url: { type: String, required: true, unique: true },
+    logo: { type: String },
+    about: {
+      type: String,
+      default:
+        'Our Store provides high quality products with affordable prices.\n' +
+        ' Contact us on Facebook or Instagram for more information',
+    },
+    storeType: { type: String },
+    creationDate: { type: Date, default: Date.now() },
+    contact: ContactSchema,
+    template: TemplateSchema,
   },
   {
     toJSON: {
@@ -16,3 +37,7 @@ export const StoreSchema = new mongoose.Schema(
     },
   },
 );
+
+StoreSchema.plugin(softDeletePlugin);
+
+export { StoreSchema };
