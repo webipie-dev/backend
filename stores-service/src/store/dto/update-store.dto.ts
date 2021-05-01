@@ -1,14 +1,5 @@
 import { Template } from '../../template/interfaces/template.interface';
-
-export class UpdateStoreDto {
-  readonly name: string;
-  readonly type: string;
-  readonly logo: string;
-  readonly about: string;
-  readonly storeType: string;
-  readonly contact: Contact;
-  readonly template: Template;
-}
+import { IsOptional } from 'class-validator';
 
 class Contact {
   readonly phoneNumber: string;
@@ -16,4 +7,21 @@ class Contact {
   readonly facebookPage: string;
   readonly instagramPage: string;
   readonly location: string;
+}
+
+export class UpdateStoreDto {
+  @IsOptional()
+  readonly name: string;
+  @IsOptional()
+  readonly type: string;
+  @IsOptional()
+  readonly logo: string;
+  @IsOptional()
+  readonly about: string;
+  @IsOptional()
+  readonly storeType: string;
+  @IsOptional()
+  readonly contact: Contact;
+  @IsOptional()
+  readonly template: Template;
 }

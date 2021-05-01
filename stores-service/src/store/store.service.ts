@@ -2,7 +2,8 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  InternalServerErrorException, NotFoundException,
+  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { Store } from './interfaces/store.interface';
 import { InjectModel } from '@nestjs/mongoose';
@@ -54,7 +55,7 @@ export class StoreService {
       await store.save();
     } catch (e) {
       throw new InternalServerErrorException({
-        message: e.message
+        message: e.message,
       });
     }
     return store;
