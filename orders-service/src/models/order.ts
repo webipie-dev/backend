@@ -1,5 +1,4 @@
 import * as mongoose from "mongoose";
-import { Model } from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { OrderStatus } from "./order-status.enum";
 import { ClientDoc } from "./client";
@@ -27,10 +26,6 @@ interface OrderDoc extends mongoose.Document{
   version: number;
 }
 
-interface OrderModel extends Model<OrderDoc>{
-  build(attrs: OrderAttrs): OrderDoc;
-}
-
 const orderSchema = new mongoose.Schema({
   orderDate: {
     type: mongoose.Schema.Types.Date,
@@ -53,9 +48,16 @@ const orderSchema = new mongoose.Schema({
   },
   products: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
-    },
+      _id: false,
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product"
+      },
+      orderedQuantity: {
+        type: Number,
+        required: true
+      }
+    }
   ],
   storeId: {
     type: String,
@@ -77,10 +79,4 @@ const orderSchema = new mongoose.Schema({
 orderSchema.set('versionKey','version');
 orderSchema.plugin(updateIfCurrentPlugin);
 
-orderSchema.statics.build = (attrs: OrderAttrs) => {
-  return new Order(attrs);
-}
-
-const Order = mongoose.model<OrderDoc, OrderModel>('Order', orderSchema);
-
-export { OrderDoc, orderSchema as OrderSchema, OrderModel }
+export { OrderDoc, orderSchema as OrderSchema, OrderAttrs }

@@ -7,7 +7,6 @@ interface ProductAttrs {
   id: string;
   name: string;
   price: number;
-  orderedQuantity: number;
   stock: number;
   image: string;
   storeId: string;
@@ -17,16 +16,11 @@ interface ProductAttrs {
 interface ProductDoc extends mongoose.Document {
   name: string;
   price: number;
-  orderedQuantity: number;
   stock: number;
   image: string;
   storeId: string;
   version: number;
-}
-
-//Interface describing the properties that a ticket model has
-interface ProductModel extends Model<ProductDoc> {
-  build(attrs: ProductAttrs): ProductDoc;
+  // add isOutOfStck metjod
 }
 
 const productSchema = new mongoose.Schema(
@@ -38,11 +32,6 @@ const productSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: true,
-    },
-    orderedQuantity: {
-      type: Number,
-      required: true,
-      min: 1,
     },
     stock: {
       type: Number,
@@ -70,20 +59,4 @@ const productSchema = new mongoose.Schema(
 productSchema.set('versionKey', 'version');
 productSchema.plugin(updateIfCurrentPlugin);
 
-productSchema.statics.build = (attrs: ProductAttrs) => {
-  return new Product({
-    _id: attrs.id,
-    name: attrs.name,
-    price: attrs.price,
-    orderedQuantity: attrs.orderedQuantity,
-    image: attrs.image,
-    storeId: attrs.storeId,
-  });
-};
-
-const Product = mongoose.model<ProductDoc, ProductModel>(
-  'Product',
-  productSchema,
-);
-
-export { ProductModel, productSchema as ProductSchema };
+export { ProductDoc, productSchema as ProductSchema };

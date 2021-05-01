@@ -27,10 +27,6 @@ interface ClientDoc extends mongoose.Document{
   };
 }
 
-interface ClientModel extends Model<ClientDoc>{
-  build(attrs: ClientAttrs): ClientDoc;
-}
-
 const clientSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -76,10 +72,4 @@ const clientSchema = new mongoose.Schema({
   },
 });
 
-clientSchema.statics.build = (attrs: ClientAttrs) => {
-  return new Client(attrs);
-}
-
-const Client = mongoose.model<ClientDoc,ClientModel>('Client', clientSchema);
-
-export { ClientModel, clientSchema as ClientSchema }
+export { ClientDoc, clientSchema as ClientSchema }
