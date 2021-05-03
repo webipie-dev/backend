@@ -31,7 +31,7 @@ export class OrdersService {
 
   //Only accessed by store owner
   async getOrder(orderId: string, storeId: string) {
-    const order = await this.order.findOne({ id: orderId, status: {
+    const order = await this.order.findOne({ _id: orderId, status: {
         $ne: OrderStatus.CANCELLED
       }, storeId }).populate('client products.product');
     if(!order)
@@ -50,11 +50,10 @@ export class OrdersService {
 
     const session = await this.product.startSession();
     session.startTransaction();
-    try {
       for (const orderedProduct of newOrder.products){
         product = await this.product.findById(orderedProduct.id);
         if (!product)
-          throw new NotFoundException(`Product with id ${orderedProduct.id} not found`);
+          throw new NotFoundException(`Product with id ${orderedProduct.id} Not Found`);
         if(product.storeId !== store.id)
           throw new BadRequestException("Product available within another store");
         if (product.stock < orderedProduct.orderedQuantity)
@@ -84,18 +83,14 @@ export class OrdersService {
       //publish order:created event to inform products service with the new stock
       await session.commitTransaction();
       return order;
-    } catch (e) {
-      console.log(e);
-    } finally {
       session.endSession();
-    }
   }
 
   //by store owner only
   async updateOrder(orderId: string, updateOrder: UpdateOrderDto, storeId: string) {
-    const order = await this.order.findOne({ id: orderId , status: {
+    const order = await this.order.findOne({ _id: orderId , status: {
       $ne: OrderStatus.CANCELLED
-      }, storeId});
+      }, storeId: storeId});
     if (!order)
       throw new NotFoundException('Order Not Found in Current Store');
     if (updateOrder.status === OrderStatus.CONFIRMED && order.status === OrderStatus.PENDING){

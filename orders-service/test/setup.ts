@@ -27,10 +27,10 @@ afterEach(async () => {
   }
 });
 
-afterAll(async () => {
-  if(mongo) await mongo.stop();
-  await mongoose.disconnect();
-  await mongoose.connection.close();
-});
+// afterAll(async () => {
+//   if(mongo) await mongo.stop();
+//   await mongoose.disconnect();
+//   await mongoose.connection.close();
+// });
 
 
