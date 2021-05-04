@@ -1,4 +1,4 @@
 export enum PaymentMethods{
   CASH = 'CASH',
-  CREDIT_CARD = 'CREDIT-CARD',
+  CREDIT_CARD = 'CREDIT_CARD',
 }

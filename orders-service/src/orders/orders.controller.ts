@@ -19,12 +19,12 @@ export class OrdersController {
   // Retrieve an order
   // Verify token role: if client : retrieve his order if its his
   // if store owner: verify if this order belongs to his store and send it back
-  @Get('order/:id')
-  async getOrder(@Param('id') id: string) {
-    return this.ordersService.getOrder(id,'storeId goes in here from the token');
+  @Get(':storeId/order/:id')
+  async getOrder(@Param('storeId') storeId: string, @Param('id') id: string) {
+    return this.ordersService.getOrder(id,storeId);
   }
 
-  //Create a new order by a client
+  //Create a new order
   @Post()
   async createOrder(@Body() newOrder: NewOrderDto) {
     return await this.ordersService.createOrder(newOrder);
@@ -43,9 +43,10 @@ export class OrdersController {
   // Verify token role: if client: it can only cancel the order
   // if store owner: it can either confirm or cancel the order
   // if to cancel the order: change its status to cancelled
-  @Put(':id')
+  @Put(':storeId/:id')
   async updateOrder(@Param('id') id: string,
+                    @Param('storeId') storeId: string,
                     @Body() updatedOrder: UpdateOrderDto) {
-    return this.ordersService.updateOrder(id, updatedOrder,'storeId goes in here from the token');
+    return this.ordersService.updateOrder(id, updatedOrder,storeId);
   }
 }
