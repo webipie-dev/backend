@@ -14,8 +14,8 @@ import { StoreService } from './store.service';
 import { CreateStoreDto } from './dto/ceate-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { Store } from './interfaces/store.interface';
-import { IdParam } from './dto/IdParam';
-import { UrlParam } from './dto/UrlParam';
+import { IdParam } from '@webipie/common';
+import { UrlParam } from '../QueryParamValidation/UrlParam';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('store')

@@ -3,7 +3,7 @@ import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 
 const TemplateSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     header: {
       img: { type: String, required: true },
       title: { type: String, required: true },
