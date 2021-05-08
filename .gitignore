@@ -6,6 +6,9 @@ stores-service/node_modules
 stores-service/src/config
 common/node_modules
 common/build
+.idea
+
+
 # compiled output
 /dist
 /node_modules
