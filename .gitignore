@@ -5,6 +5,9 @@ users-service/node_modules
 stores-service/dist
 stores-service/node_modules
 stores-service/src/config
+
+products-service/dist
+products-service/src/config
 # compiled output
 /dist
 /node_modules

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { Store } from '../interfaces/store.interface';
 
@@ -8,11 +8,11 @@ export class StoreController {
 
   @Get('')
   async getAll(): Promise<Store[]> {
-    return await this.storeService.getAllProducts();
+    return await this.storeService.getAllStores();
   }
 
   @Get('/:id')
-  async getOne(@Query() id: string): Promise<Store> {
+  async getOne(@Param('id') id: string): Promise<Store> {
     return await this.storeService.getOneStore(id);
   }
 

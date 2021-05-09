@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { Store } from '../interfaces/store.interface';
+import { Product } from '../interfaces/product.interface';
 
 @Injectable()
 export class StoreService {
@@ -10,7 +11,7 @@ export class StoreService {
     private readonly storeModel: SoftDeleteModel<Store>,
   ) {}
 
-  async getAllProducts() {
+  async getAllStores(): Promise<Store[]> {
     return this.storeModel.find();
   }
 
