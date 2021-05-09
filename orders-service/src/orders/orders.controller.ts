@@ -4,6 +4,7 @@ import { NewOrderDto } from "../models/dto/new-order.dto";
 import { ProductDto } from "../models/dto/product.dto";
 import { StoreDto } from "../models/dto/store.dto";
 import { UpdateOrderDto } from "../models/dto/update-order.dto";
+import { IsMongoId } from "class-validator";
 
 @Controller('api/orders')
 export class OrdersController {
@@ -44,7 +45,7 @@ export class OrdersController {
   // if store owner: it can either confirm or cancel the order
   // if to cancel the order: change its status to cancelled
   @Put(':storeId/:id')
-  async updateOrder(@Param('id') id: string,
+  async updateOrder(@Param('id')  id: string,
                     @Param('storeId') storeId: string,
                     @Body() updatedOrder: UpdateOrderDto) {
     return this.ordersService.updateOrder(id, updatedOrder,storeId);

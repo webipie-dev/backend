@@ -268,17 +268,18 @@ describe("Fetch an order", () => {
       .rejects
       .toThrow(`Order ${orderId} not found in current store`);
   });
-  it("Should throw 404 not found error if order was cancelled in the past", async () => {
+  it("Should throw 404 not found error if store not found", async () => {
     const order = await createOrder();
-    order.set({status: OrderStatus.CANCELLED});
     await order.save();
 
-    await expect(ordersService.getOrder(order.id, order.storeId))
+    const storeId = new mongoose.Types.ObjectId().toHexString();
+
+    await expect(ordersService.getOrder(order.id, storeId))
       .rejects
       .toThrow(NotFoundException);
-    await expect(ordersService.getOrder(order.id, order.storeId))
+    await expect(ordersService.getOrder(order.id, storeId))
       .rejects
-      .toThrow(`Order ${order.id} not found in current store`);
+      .toThrow(`Store ${storeId} not found`);
   });
   it("Should throw 404 not found error if the order doesn't belong to the store of the store owner", async () => {
     const order = await createOrder();

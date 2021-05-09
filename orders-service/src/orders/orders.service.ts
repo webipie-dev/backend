@@ -24,16 +24,20 @@ export class OrdersService {
   //add pagination to this
   //Only accessed by store owner
   async getOrders (storeId: string) {
-    return this.order.find({storeId,status: {
-        $ne: OrderStatus.CANCELLED
-      } }).populate('client');
+    const store = await this.store.findById(storeId);
+    if (!store)
+      throw new NotFoundException(`Store ${storeId} not found`);
+    return this.order.find({storeId}).populate('client');
   }
 
   //Only accessed by store owner
   async getOrder(orderId: string, storeId: string) {
-    const order = await this.order.findOne({ _id: orderId, status: {
-        $ne: OrderStatus.CANCELLED
-      }, storeId }).populate('client products.product');
+    const store = await this.store.findById(storeId);
+    if (!store)
+      throw new NotFoundException(`Store ${storeId} not found`);
+    const order = await this.order.findById(orderId).populate('client products.product');
+    if (order.storeId !== store.id)
+      throw new NotFoundException(`Order ${orderId} not found in current store`);
     if(!order)
       throw new NotFoundException(`Order ${orderId} not found in current store`);
     return order;
@@ -88,7 +92,7 @@ export class OrdersService {
 
   //by store owner only
   async updateOrder(orderId: string, updateOrder: UpdateOrderDto, storeId: string) {
-    const order = await this.order.findOne({ _id: orderId , status: {
+    const order = await this.order.findOne({ _id: orderId , status: { // fetch by id than test on status not cancelled
       $ne: OrderStatus.CANCELLED
       }, storeId: storeId});
     if (!order)

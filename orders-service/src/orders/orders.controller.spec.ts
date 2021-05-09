@@ -104,7 +104,6 @@ describe('Fetch Order',() => {
       .get(`/api/orders/${store.id}/order/${new mongoose.Types.ObjectId().toHexString()}`);
     expect(status).not.toEqual(403);
     expect(status).not.toEqual(200);
-    console.log(body);
   })
   it("Should return 200 if order is fetched", async () => {
     const { body } = await request(app.getHttpServer())
