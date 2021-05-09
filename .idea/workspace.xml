@@ -1,27 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c71a6534-7b43-46d6-a042-cfa5a91a7e8a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/orders-service/src/orders/orders.controller.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/orders-service/src/orders/orders.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/orders-service/src/test/orders.controller.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/orders-service/src/test/orders.service.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/orders-service/src/test/setup.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/orders-service/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/orders-service/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/orders-service/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/orders-service/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/orders-service/src/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/orders-service/src/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/orders-service/src/models/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/orders-service/src/models/client.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/orders-service/src/models/product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/orders-service/src/models/product.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/orders-service/test/jest-e2e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/orders-service/tsconfig.build.json" beforeDir="false" afterPath="$PROJECT_DIR$/orders-service/tsconfig.build.json" afterDir="false" />
-    </list>
+    <list default="true" id="c71a6534-7b43-46d6-a042-cfa5a91a7e8a" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1rA0ulR18UpKp2c21A9LiuStPse" />
   <component name="ProjectViewState">
@@ -30,9 +14,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/orders-service" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -48,7 +30,6 @@
       <option name="presentableId" value="Default" />
       <updated>1618403812219</updated>
       <workItem from="1618403813305" duration="557000" />
-      <workItem from="1619518228800" duration="25000" />
     </task>
     <servers />
   </component>
