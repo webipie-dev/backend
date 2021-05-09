@@ -17,14 +17,20 @@ import { IdParam } from '@webipie/common';
 @Controller('template')
 export class TemplateController {
   constructor(private readonly templateService: TemplateService) {}
+
   @Get('')
-  async getAllTemplates(@Query() query): Promise<Template[]> {
+  async getAllTemplates(@Query() query?): Promise<Template[]> {
     return await this.templateService.getAllTemplates(query);
   }
 
   @Get('/:id')
   async getOneTemplate(@Param() param: IdParam): Promise<Template> {
     return await this.templateService.getOneTemplate(param.id);
+  }
+
+  @Get('deleted/all')
+  async getDeletedTemplates(): Promise<Template[]> {
+    return await this.templateService.getDeletedTemplates();
   }
 
   @Post('')
@@ -46,8 +52,8 @@ export class TemplateController {
   }
 
   @Delete('/delete')
-  async deleteAllTemplates(): Promise<Record<string, unknown>> {
-    return await this.templateService.deleteAllTemplates();
+  async deleteAllTemplates(@Query() query?): Promise<Record<string, unknown>> {
+    return await this.templateService.deleteAllTemplates(query);
   }
 
   @Delete('/delete/:id')
@@ -63,10 +69,5 @@ export class TemplateController {
   @Get('/restore/:id')
   async restoreById(@Param() param: IdParam): Promise<Template> {
     return await this.templateService.restoreTemplateById(param.id);
-  }
-
-  @Get('deleted/all')
-  async getDeletedTemplates(): Promise<Template[]> {
-    return await this.templateService.getDeletedTemplates();
   }
 }

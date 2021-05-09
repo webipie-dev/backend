@@ -16,11 +16,11 @@ export class UpdateTemplateDto {
   readonly colorChart: Record<string, any>;
 
   @IsOptional()
-  readonly colorChartOptions: [Record<string, any>];
+  readonly colorChartOptions: Record<string, any>[];
 
   @IsOptional()
   readonly font: string;
 
   @IsOptional()
-  readonly fontOptions: [string];
+  readonly fontOptions: string[];
 }

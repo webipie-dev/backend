@@ -12,7 +12,9 @@ export class TemplateService {
     private readonly templateModel: SoftDeleteModel<Template>,
   ) {}
 
-  async getAllTemplates(filters: Record<string, unknown>): Promise<Template[]> {
+  async getAllTemplates(
+    filters?: Record<string, unknown>,
+  ): Promise<Template[]> {
     return this.templateModel.find(filters);
   }
 
@@ -40,12 +42,10 @@ export class TemplateService {
     return this.templateModel.findByIdAndUpdate(id, templateDTO, { new: true });
   }
 
-  test(): string {
-    return 'hello';
-  }
-
-  async deleteAllTemplates(): Promise<Record<string, unknown>> {
-    return this.templateModel.deleteMany();
+  async deleteAllTemplates(
+    filters?: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
+    return this.templateModel.deleteMany(filters);
   }
 
   async deleteTemplateById(id: string): Promise<Template> {
