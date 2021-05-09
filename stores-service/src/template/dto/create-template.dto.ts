@@ -11,6 +11,7 @@ import {
   minSizeRequired,
   nestedElementsRequired,
 } from '@webipie/common';
+import { Type } from 'class-transformer';
 
 export class CreateTemplateDto {
   @IsNotEmpty({
@@ -58,7 +59,7 @@ export class CreateTemplateDto {
     message: (validationData: ValidationArguments) =>
       minSizeRequired(validationData.property),
   })
-  readonly colorChartOptions: [Record<string, any>];
+  readonly colorChartOptions: Record<string, any>[];
 
   @IsNotEmpty({
     message: (validationData: ValidationArguments) =>
@@ -83,5 +84,5 @@ export class CreateTemplateDto {
     message: (validationData: ValidationArguments) =>
       minSizeRequired(validationData.property),
   })
-  readonly fontOptions: [string];
+  readonly fontOptions: string[];
 }

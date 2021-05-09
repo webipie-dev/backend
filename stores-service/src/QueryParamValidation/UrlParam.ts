@@ -1,5 +1,5 @@
 import { Matches } from 'class-validator';
-import { isNotUrl } from '../error/error-messages';
+import { isNotUrl } from '@webipie/common';
 
 export class UrlParam {
   @Matches(/.*\.webipie\.com$/, {
