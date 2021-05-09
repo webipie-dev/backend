@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Template } from './interfaces/template.interface';
 import { CreateTemplateDto } from './dto/create-template.dto';
@@ -13,7 +13,6 @@ export class TemplateService {
   ) {}
 
   async getAllTemplates(filters: Record<string, unknown>): Promise<Template[]> {
-    console.log(filters);
     return this.templateModel.find(filters);
   }
 
@@ -35,14 +34,14 @@ export class TemplateService {
     templateDTO: UpdateTemplateDto,
   ): Promise<Template> {
     const template = await this.templateModel.findById(id);
-    // verify if it exists
+    if (!template) {
+      throw new NotFoundException('Template Not Found');
+    }
+    return this.templateModel.findByIdAndUpdate(id, templateDTO, { new: true });
+  }
 
-    const updatedTemplate = await this.templateModel.findByIdAndUpdate(
-      id,
-      templateDTO,
-      { new: true },
-    );
-    return updatedTemplate;
+  test(): string {
+    return 'hello';
   }
 
   async deleteAllTemplates(): Promise<Record<string, unknown>> {

@@ -12,6 +12,7 @@ import { TemplateService } from './template.service';
 import { Template } from './interfaces/template.interface';
 import { CreateTemplateDto } from './dto/create-template.dto';
 import { UpdateTemplateDto } from './dto/update-template.dto';
+import { IdParam } from '@webipie/common';
 
 @Controller('template')
 export class TemplateController {
@@ -22,8 +23,8 @@ export class TemplateController {
   }
 
   @Get('/:id')
-  async getOneTemplate(@Param('id') id): Promise<Template> {
-    return await this.templateService.getOneTemplate(id);
+  async getOneTemplate(@Param() param: IdParam): Promise<Template> {
+    return await this.templateService.getOneTemplate(param.id);
   }
 
   @Post('')
@@ -35,10 +36,13 @@ export class TemplateController {
 
   @Patch('/:id')
   async editOneTemplate(
-    @Param('id') id: string,
+    @Param() param: IdParam,
     @Body() updateTemplateDto: UpdateTemplateDto,
   ): Promise<Template> {
-    return await this.templateService.editOneTemplate(id, updateTemplateDto);
+    return await this.templateService.editOneTemplate(
+      param.id,
+      updateTemplateDto,
+    );
   }
 
   @Delete('/delete')
@@ -47,18 +51,18 @@ export class TemplateController {
   }
 
   @Delete('/delete/:id')
-  async deleteTemplateById(@Param('id') id: string): Promise<Template> {
-    return await this.templateService.deleteTemplateById(id);
+  async deleteTemplateById(@Param() param: IdParam): Promise<Template> {
+    return await this.templateService.deleteTemplateById(param.id);
   }
 
   @Delete('/:id')
-  async softDeleteTemplateById(@Param('id') id: string): Promise<Template> {
-    return await this.templateService.softDeleteTemplateById(id);
+  async softDeleteTemplateById(@Param() param: IdParam): Promise<Template> {
+    return await this.templateService.softDeleteTemplateById(param.id);
   }
 
   @Get('/restore/:id')
-  async restoreById(@Param('id') id: string): Promise<Template> {
-    return await this.templateService.restoreTemplateById(id);
+  async restoreById(@Param() param: IdParam): Promise<Template> {
+    return await this.templateService.restoreTemplateById(param.id);
   }
 
   @Get('deleted/all')

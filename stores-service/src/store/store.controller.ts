@@ -7,13 +7,16 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { CreateStoreDto } from './dto/ceate-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { Store } from './interfaces/store.interface';
-import { IdParam } from './dto/IdParam';
-import { UrlParam } from './dto/UrlParam';
+import { IdParam } from '@webipie/common';
+import { UrlParam } from '../QueryParamValidation/UrlParam';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('store')
 export class StoreController {
@@ -50,10 +53,14 @@ export class StoreController {
   }
 
   @Patch('/:id')
+  @UseInterceptors(FileInterceptor('logo'))
   async editOneStore(
+    @UploadedFile() file: Express.Multer.File,
     @Param() param: IdParam,
     @Body() updateStoreDto: UpdateStoreDto,
   ): Promise<Store> {
+    console.log(file);
+    console.log(updateStoreDto);
     return await this.storeService.editOneStore(param.id, updateStoreDto);
   }
 
