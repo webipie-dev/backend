@@ -6,7 +6,7 @@ import { AllExceptionFilter } from '@webipie/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
-  app.useGlobalFilters(new AllExceptionFilter());
+  // app.useGlobalFilters(new AllExceptionFilter());
   //app.use(morgan('combined'));
   await app.listen(3000);
 }

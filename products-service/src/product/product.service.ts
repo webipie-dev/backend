@@ -11,6 +11,7 @@ import { StoreService } from '../store/store.service';
 import { EditProductDto } from './dto/edit-product.dto';
 import mongodb from 'mongodb';
 import { QueryWithHelpers } from 'mongoose';
+import { AddReviewDto } from './dto/add-review.dto';
 
 @Injectable()
 export class ProductService {
@@ -116,12 +117,28 @@ export class ProductService {
     return productEdited;
   }
 
+  async addReview(
+    id: string,
+    reviewDTO: AddReviewDto,
+  ): Promise<QueryWithHelpers<any, any>> {
+    // add time to review
+    reviewDTO.date = Date.now();
+
+    const productUpdate = await this.productModel
+      .updateOne({ _id: id }, { $push: { reviews: reviewDTO } })
+      .catch((err) => {
+        throw new InternalServerErrorException(err.message);
+      });
+
+    return productUpdate;
+  }
+
   async deleteProductById(id: string): Promise<Product> {
     return this.productModel.findByIdAndDelete(id);
   }
 
-  async softDeleteProductById(id: string): Promise<Product> {
-    return this.productModel.softDelete(id);
+  async softDeleteProductById(query: Record<string, any>): Promise<number> {
+    return this.productModel.softDelete(query);
   }
 
   async deleteAllProducts(): Promise<QueryWithHelpers<any, any>> {
