@@ -155,7 +155,7 @@ describe('TemplateController', () => {
     );
   });
 
-  it('should delete soft delete template by id', async () => {
+  it('should soft delete template by id', async () => {
     const idParam = { id: 'abc' };
     expect(await controller.softDeleteTemplateById(idParam)).toEqual({
       id: idParam.id,
@@ -167,7 +167,7 @@ describe('TemplateController', () => {
 
   it('should restore a soft deleted template', async () => {
     const idParam = { id: 'abc' };
-    expect(await controller.restoreById(idParam)).toEqual({
+    expect(await controller.restoreTemplateById(idParam)).toEqual({
       id: idParam.id,
     });
     expect(mockTemplateService.restoreTemplateById).toHaveBeenCalledWith(

@@ -23,7 +23,7 @@ export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
   @Get('')
-  async getAllStores(@Query() query): Promise<Store[]> {
+  async getFilteredStores(@Query() query?): Promise<Store[]> {
     return await this.storeService.getFilteredStores(query);
   }
 
@@ -55,9 +55,9 @@ export class StoreController {
   @Patch('/:id')
   @UseInterceptors(FileInterceptor('logo'))
   async editOneStore(
-    @UploadedFile() file: Express.Multer.File,
     @Param() param: IdParam,
     @Body() updateStoreDto: UpdateStoreDto,
+    @UploadedFile() file?: Express.Multer.File,
   ): Promise<Store> {
     console.log(file);
     console.log(updateStoreDto);
@@ -65,8 +65,8 @@ export class StoreController {
   }
 
   @Delete('/delete')
-  async deleteAllStores(): Promise<Record<string, unknown>> {
-    return await this.storeService.deleteAllStores();
+  async deleteFilteredStores(@Query() query?): Promise<Record<string, unknown>> {
+    return await this.storeService.deleteFilteredStores(query);
   }
 
   @Delete('/delete/:id')

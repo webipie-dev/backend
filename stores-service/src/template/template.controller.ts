@@ -67,7 +67,7 @@ export class TemplateController {
   }
 
   @Get('/restore/:id')
-  async restoreById(@Param() param: IdParam): Promise<Template> {
+  async restoreTemplateById(@Param() param: IdParam): Promise<Template> {
     return await this.templateService.restoreTemplateById(param.id);
   }
 }

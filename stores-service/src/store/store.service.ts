@@ -17,7 +17,7 @@ export class StoreService {
     private templateService: TemplateService,
   ) {}
 
-  async getFilteredStores(filters: Record<string, unknown>): Promise<Store[]> {
+  async getFilteredStores(filters?: Record<string, unknown>): Promise<Store[]> {
     return this.storeModel.find(filters);
   }
 
@@ -69,8 +69,10 @@ export class StoreService {
     });
   }
 
-  async deleteAllStores(): Promise<Record<string, unknown>> {
-    return this.storeModel.deleteMany();
+  async deleteFilteredStores(
+    filters?: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
+    return this.storeModel.deleteMany(filters);
   }
 
   async deleteStoreById(id: string): Promise<Store> {
