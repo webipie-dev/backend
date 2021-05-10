@@ -65,7 +65,9 @@ export class StoreController {
   }
 
   @Delete('/delete')
-  async deleteFilteredStores(@Query() query?): Promise<Record<string, unknown>> {
+  async deleteFilteredStores(
+    @Query() query?,
+  ): Promise<Record<string, unknown>> {
     return await this.storeService.deleteFilteredStores(query);
   }
 
