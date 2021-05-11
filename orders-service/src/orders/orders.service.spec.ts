@@ -19,41 +19,17 @@ let productModel: Model<ProductDoc>;
 let clientModel: Model<ClientDoc>;
 let storeModel: Model<StoreDoc>;
 
-const newOrder: NewOrderDto = {
-  storeId: new mongoose.Types.ObjectId().toHexString(),
-  paymentMethod: PaymentMethods.CASH,
-  products: [{ id: new mongoose.Types.ObjectId().toHexString(), orderedQuantity: 5 }],
-  client: {
-    firstName: 'sinda',
-    lastName: 'jeddey',
-    email: 'stuff@stuff.com',
-    phoneNumber: '852741',
-    address: {
-      street: 'mimosas',
-      city: 'TUNIS',
-      state: 'TUNIS',
-      zipCode: '2045'
-    }
-  }
-}
-const newProduct = {
-  id:new mongoose.Types.ObjectId().toHexString(),
-  name: 'test product',
-  price: 120,
-  stock: 100,
-  image: 'test image',
-  storeId: 'storeId',
-  version: 1
-}
+let newOrder: NewOrderDto;
+let newProduct;
 let store;
 
-const init = async (newProduct, newOrder) => {
+const init = async (newOrder) => {
   store = new storeModel({id: newOrder.storeId});
   await store.save();
   newOrder.storeId = store.id;
 }
 const createOrder = async () => {
-  await init(newProduct, newOrder);
+  await init(newOrder);
   newProduct.storeId = store.id;
   const product = new productModel(newProduct);
   await product.save();
@@ -79,12 +55,41 @@ beforeEach(async () => {
   productModel = module.get<Model<ProductDoc>>('ProductModel');
   clientModel = module.get<Model<ClientDoc>>('ClientModel');
   storeModel = module.get<Model<StoreDoc>>('StoreModel');
+
+  newOrder = {
+    storeId: new mongoose.Types.ObjectId().toHexString(),
+    paymentMethod: PaymentMethods.CASH,
+    products: [{ id: new mongoose.Types.ObjectId().toHexString(), orderedQuantity: 5 }],
+    client: {
+      firstName: 'sinda',
+      lastName: 'jeddey',
+      email: 'stuff@stuff.com',
+      phoneNumber: '852741',
+      address: {
+        street: 'mimosas',
+        city: 'TUNIS',
+        state: 'TUNIS',
+        zipCode: '2045'
+      }
+    }
+  };
+  newProduct = {
+    id:new mongoose.Types.ObjectId().toHexString(),
+    name: 'test product',
+    price: 120,
+    stock: 100,
+    image: 'test image',
+    storeId: 'storeId',
+    version: 1
+  };
+  store = null;
 });
 
 describe("Fetch All orders", () => {
   it("Should return all orders", async () => {
-    const storeId = new mongoose.Types.ObjectId().toHexString();
-    const orders = await ordersService.getOrders(storeId);
+    await init(newOrder);
+
+    const orders = await ordersService.getOrders(store.id);
 
     expect(orders.length).toEqual(0);
   });
@@ -100,7 +105,7 @@ describe("Create an order", () => {
       .toThrowError(`Store ${newOrder.storeId} Not Found`);
   });
   it("should throw 404 not found error if one the ordered products doesn't exist", async () => {
-    await init(newProduct, newOrder);
+    await init(newOrder);
 
     await expect(ordersService.createOrder(newOrder))
       .rejects
@@ -110,11 +115,13 @@ describe("Create an order", () => {
       .toThrowError(`Product with id ${newOrder.products[0].id} Not Found`);
   });
   it("should throw 400 bad request error if one of the ordered quantities is over the stock", async () => {
-    await init(newProduct, newOrder);
+    await init(newOrder);
     newProduct.storeId = store.id;
     const product = new productModel(newProduct);
     await product.save();
+
     newOrder.products[0].id = product.id;
+    newOrder.products[0].orderedQuantity = product.stock +1;
 
     await expect(ordersService.createOrder(newOrder))
       .rejects
@@ -125,7 +132,7 @@ describe("Create an order", () => {
 
   });
   it("should throw 400 bad request error if the store id in the product not compatible with the store id in the order", async () => {
-    await init(newProduct, newOrder);
+    await init(newOrder);
     newProduct.storeId = new mongoose.Types.ObjectId().toHexString();
     const product = new productModel(newProduct);
     await product.save();
@@ -139,7 +146,7 @@ describe("Create an order", () => {
       .toThrowError("Product available within another store");
   });
   it("should create a new client if a new client orders", async () => {
-    await init(newProduct, newOrder);
+    await init(newOrder);
     newProduct.storeId = store.id;
     const product = new productModel(newProduct);
     await product.save();
@@ -152,7 +159,7 @@ describe("Create an order", () => {
     expect(client.firstName).toEqual(order.client.firstName);
   });
   it("should create a new order if everything goes well: test price, status, payment method", async () => {
-    await init(newProduct, newOrder);
+    await init(newOrder);
     newProduct.storeId = store.id;
     const product = new productModel(newProduct);
     await product.save();
@@ -194,7 +201,6 @@ describe("Update an order",() => {
 
     await order.save();
 
-
     await expect(ordersService.updateOrder(order.id,
       {
         status: OrderStatus.CONFIRMED
@@ -225,7 +231,6 @@ describe("Update an order",() => {
       }, order.storeId))
       .rejects
       .toThrowError('Can\'t update order status from CONFIRMED to PENDING');
-
   });
   it("Should throw 400 bad request error when updating from CONFIRMED to CANCELLED", async () => {
     const order = await createOrder();
@@ -259,6 +264,8 @@ describe("Update an order",() => {
 describe("Fetch an order", () => {
   it("Should throw 404 not found error if order not found",async () => {
     const storeId = new mongoose.Types.ObjectId().toHexString();
+    const store = new storeModel({_id: storeId});
+    await store.save();
     const orderId = new mongoose.Types.ObjectId().toHexString();
 
     await expect(ordersService.getOrder(orderId, storeId))
@@ -284,6 +291,8 @@ describe("Fetch an order", () => {
   it("Should throw 404 not found error if the order doesn't belong to the store of the store owner", async () => {
     const order = await createOrder();
     const storeId = new mongoose.Types.ObjectId().toHexString();
+    const store = new storeModel({_id: storeId});
+    await store.save();
 
     await expect(ordersService.getOrder(order.id,storeId))
       .rejects
@@ -303,9 +312,9 @@ describe("Fetch an order", () => {
   });
 });
 
-afterEach(() => {
-  orderModel.deleteMany({});
-  productModel.deleteMany({});
-  storeModel.deleteMany({});
-  clientModel.deleteMany({});
-})
+afterEach(async () => {
+  await orderModel.deleteMany({});
+  await productModel.deleteMany({});
+  await storeModel.deleteMany({});
+  await clientModel.deleteMany({});
+});

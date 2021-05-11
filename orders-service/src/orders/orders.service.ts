@@ -37,7 +37,7 @@ export class OrdersService {
       throw new NotFoundException(`Store ${storeId} not found`);
     const order = await this.order.findById(orderId).populate('client products.product');
     if (!order)
-      throw new NotFoundException(`Order ${orderId} not found`);
+      throw new NotFoundException(`Order ${orderId} not found in current store`);
     if (order.storeId !== store.id)
       throw new NotFoundException(`Order ${orderId} not found in current store`);
     if(!order)

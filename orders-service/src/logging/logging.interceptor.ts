@@ -2,7 +2,7 @@ import { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
 import { Request, Response} from "express";
 import { Observable, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
-import { log } from "util";
+
 //:ip :method :url - :status :res[content-length] - :response-time ms
 export class LoggingInterceptor implements NestInterceptor{
   intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | Promise<Observable<any>> {

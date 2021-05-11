@@ -19,18 +19,10 @@ export const rootMongooseTestModule = () =>
     }
   });
 
-afterEach(async () => {
-  const collections = mongoose.connection.collections;
-  for (const key in collections) {
-    const collection = collections[key];
-    await collection.deleteMany({});
-  }
+afterAll(async () => {
+  if(mongo) await mongo.stop();
+  await mongoose.disconnect();
+  await mongoose.connection.close();
 });
-
-// afterAll(async () => {
-//   if(mongo) await mongo.stop();
-//   await mongoose.disconnect();
-//   await mongoose.connection.close();
-// });
 
 
