@@ -19,7 +19,7 @@ export class TemplateService {
   async getFilteredTemplates(
     filters?: Record<string, unknown>,
   ): Promise<Template[]> {
-    return this.templateModel.find(filters);
+    return await this.templateModel.find(filters).catch(error => { throw new InternalServerErrorException(error.message)});
   }
 
   async getOneTemplate(id: string): Promise<Template> {
@@ -29,15 +29,20 @@ export class TemplateService {
   }
 
   async getDeletedTemplates(): Promise<Template[]> {
-    return this.templateModel.findDeleted();
+    let deletedTemplates: Template[];
+    try {
+      deletedTemplates = await this.templateModel.findDeleted();
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
+    return deletedTemplates;
   }
 
   async addOneTemplate(templateDTO: CreateTemplateDto): Promise<Template> {
     const template = await new this.templateModel(templateDTO);
-    await template.save().catch((error) => {
+    return await template.save().catch((error) => {
       throw new InternalServerErrorException({ message: error.message });
     });
-    return template;
   }
 
   async editOneTemplate(
@@ -48,7 +53,7 @@ export class TemplateService {
     if (!template) {
       throw new NotFoundException('Template Not Found');
     }
-    return this.templateModel
+    return await this.templateModel
       .findByIdAndUpdate(id, templateDTO, { new: true })
       .catch((error) => {
         throw new InternalServerErrorException(error.message);
@@ -58,13 +63,13 @@ export class TemplateService {
   async deleteFilteredTemplates(
     filters?: Record<string, unknown>,
   ): Promise<Record<string, unknown>> {
-    return this.templateModel.deleteMany(filters).catch((error) => {
+    return await this.templateModel.deleteMany(filters).catch((error) => {
       throw new InternalServerErrorException(error.message);
     });
   }
 
   async deleteTemplateById(id: string): Promise<Template> {
-    return this.templateModel.findByIdAndDelete(id).catch((error) => {
+    return await this.templateModel.findByIdAndDelete(id).catch((error) => {
       throw new InternalServerErrorException(error.message);
     });
   }

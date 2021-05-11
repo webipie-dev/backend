@@ -18,19 +18,34 @@ export class StoreService {
   ) {}
 
   async getFilteredStores(filters?: Record<string, unknown>): Promise<Store[]> {
-    return this.storeModel.find(filters);
+    return await this.storeModel.find(filters).catch((error) => {
+      throw new InternalServerErrorException(error.message);
+    });
   }
 
   async getOneStore(id: string): Promise<Store> {
-    return this.storeModel.findById(id);
+    return await this.storeModel.findById(id).catch((error) => {
+      throw new InternalServerErrorException(error.message);
+    });
   }
 
   async getDeletedStores(): Promise<Store[]> {
-    return this.storeModel.findDeleted();
+    let deletedStores: Store[];
+    try {
+      deletedStores = await this.storeModel.findDeleted();
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
+    return deletedStores;
   }
 
   async getStoreUrls(): Promise<{ url: string }[]> {
-    return this.storeModel.find().select({ url: 1, _id: 0 });
+    return await this.storeModel
+      .find()
+      .select({ url: 1, _id: 0 })
+      .catch((error) => {
+        throw new InternalServerErrorException(error.message);
+      });
   }
 
   async addOneStore(storeDTO: CreateStoreDto): Promise<Store> {
@@ -47,16 +62,10 @@ export class StoreService {
         '.webipie.com',
       template,
     };
-    let store: Store;
-    try {
-      store = await new this.storeModel(storeToBe);
-      await store.save();
-    } catch (e) {
-      throw new InternalServerErrorException({
-        message: e.message,
-      });
-    }
-    return store;
+    const store = await new this.storeModel(storeToBe);
+    return await store.save().catch((error) => {
+      throw new InternalServerErrorException(error.message);
+    });
   }
 
   async editOneStore(id: string, storeDTO: UpdateStoreDto): Promise<Store> {
@@ -64,26 +73,46 @@ export class StoreService {
     if (!store) {
       throw new NotFoundException('Store Not Found');
     }
-    return this.storeModel.findByIdAndUpdate(id, storeDTO, {
-      new: true,
-    });
+    return await this.storeModel
+      .findByIdAndUpdate(id, storeDTO, {
+        new: true,
+      })
+      .catch((error) => {
+        throw new InternalServerErrorException(error.message);
+      });
   }
 
   async deleteFilteredStores(
     filters?: Record<string, unknown>,
   ): Promise<Record<string, unknown>> {
-    return this.storeModel.deleteMany(filters);
+    return await this.storeModel.deleteMany(filters).catch((error) => {
+      throw new InternalServerErrorException(error.message);
+    });
   }
 
   async deleteStoreById(id: string): Promise<Store> {
-    return this.storeModel.findByIdAndDelete(id);
+    return await this.storeModel.findByIdAndDelete(id).catch((error) => {
+      throw new InternalServerErrorException(error.message);
+    });
   }
 
   async softDeleteStoreById(id: string): Promise<Store> {
-    return this.storeModel.softDelete(id);
+    let deletedStore: Store;
+    try {
+      deletedStore = await this.storeModel.softDelete(id);
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
+    return deletedStore;
   }
 
   async restoreStoreById(id: string): Promise<Store> {
-    return this.storeModel.restore(id);
+    let restoredStore: Store;
+    try {
+      restoredStore = await this.storeModel.restore(id);
+    } catch (e) {
+      throw new InternalServerErrorException(e.message);
+    }
+    return restoredStore;
   }
 }

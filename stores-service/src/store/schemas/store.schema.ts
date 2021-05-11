@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
-import { TemplateSchema } from '../../template/schemas/template.schema';
+import { TemplateSchema } from './template.schema';
 
 const ContactSchema = new mongoose.Schema({
   phoneNumber: { type: String },
@@ -12,7 +12,7 @@ const ContactSchema = new mongoose.Schema({
 
 const StoreSchema = new mongoose.Schema(
   {
-    name: { type: String },
+    name: { type: String, unique: true },
     type: { type: String },
     url: { type: String, required: true, unique: true },
     logo: { type: String },

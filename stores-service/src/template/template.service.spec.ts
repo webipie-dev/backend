@@ -10,7 +10,6 @@ import { InternalServerErrorException } from '@nestjs/common';
 import { Template } from './interfaces/template.interface';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import * as mongoose from 'mongoose';
-import { stringify } from 'querystring';
 
 describe('TemplateService', () => {
   let service: TemplateService;
