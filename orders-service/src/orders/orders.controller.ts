@@ -1,0 +1,53 @@
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { OrdersService } from "./orders.service";
+import { NewOrderDto } from "../models/dto/new-order.dto";
+import { ProductDto } from "../models/dto/product.dto";
+import { StoreDto } from "../models/dto/store.dto";
+import { UpdateOrderDto } from "../models/dto/update-order.dto";
+import { IsMongoId } from "class-validator";
+
+@Controller('api/orders')
+export class OrdersController {
+
+  constructor(private ordersService: OrdersService) {}
+
+// Retrieve the store id from the sent token and retrieve the orders of its store
+  @Get(':storeId')
+  async getOrders(@Param('storeId') storeId: string) {
+    return await this.ordersService.getOrders(storeId);
+  }
+
+  // Retrieve an order
+  // Verify token role: if client : retrieve his order if its his
+  // if store owner: verify if this order belongs to his store and send it back
+  @Get(':storeId/order/:id')
+  async getOrder(@Param('storeId') storeId: string, @Param('id') id: string) {
+    return this.ordersService.getOrder(id,storeId);
+  }
+
+  //Create a new order
+  @Post()
+  async createOrder(@Body() newOrder: NewOrderDto) {
+    return await this.ordersService.createOrder(newOrder);
+  }
+
+  @Post('/products')
+  async createProduct(@Body() productDto: ProductDto){
+    return await this.ordersService.saveProduct(productDto);
+  }
+
+  @Post('/stores')
+  async createStore(@Body() storeDto: StoreDto){
+    return await this.ordersService.saveStore(storeDto);
+  }
+
+  // Verify token role: if client: it can only cancel the order
+  // if store owner: it can either confirm or cancel the order
+  // if to cancel the order: change its status to cancelled
+  @Put(':storeId/:id')
+  async updateOrder(@Param('id')  id: string,
+                    @Param('storeId') storeId: string,
+                    @Body() updatedOrder: UpdateOrderDto) {
+    return this.ordersService.updateOrder(id, updatedOrder,storeId);
+  }
+}
