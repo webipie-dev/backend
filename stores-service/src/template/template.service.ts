@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Template } from './interfaces/template.interface';
 import { CreateTemplateDto } from './dto/create-template.dto';
@@ -12,8 +12,9 @@ export class TemplateService {
     private readonly templateModel: SoftDeleteModel<Template>,
   ) {}
 
-  async getAllTemplates(filters: Record<string, unknown>): Promise<Template[]> {
-    console.log(filters);
+  async getAllTemplates(
+    filters?: Record<string, unknown>,
+  ): Promise<Template[]> {
     return this.templateModel.find(filters);
   }
 
@@ -35,18 +36,16 @@ export class TemplateService {
     templateDTO: UpdateTemplateDto,
   ): Promise<Template> {
     const template = await this.templateModel.findById(id);
-    // verify if it exists
-
-    const updatedTemplate = await this.templateModel.findByIdAndUpdate(
-      id,
-      templateDTO,
-      { new: true },
-    );
-    return updatedTemplate;
+    if (!template) {
+      throw new NotFoundException('Template Not Found');
+    }
+    return this.templateModel.findByIdAndUpdate(id, templateDTO, { new: true });
   }
 
-  async deleteAllTemplates(): Promise<Record<string, unknown>> {
-    return this.templateModel.deleteMany();
+  async deleteAllTemplates(
+    filters?: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
+    return this.templateModel.deleteMany(filters);
   }
 
   async deleteTemplateById(id: string): Promise<Template> {

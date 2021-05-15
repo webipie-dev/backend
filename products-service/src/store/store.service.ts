@@ -25,4 +25,8 @@ export class StoreService {
     });
     return await store.save();
   }
+
+  async softDelete(query) {
+    return this.storeModel.softDelete(query);
+  }
 }

@@ -21,8 +21,9 @@ export class ProductService {
     private storeService: StoreService,
   ) {}
 
-  async getAllProducts(): Promise<Product[]> {
-    return this.productModel.find();
+  async getAllProducts(query): Promise<Product[]> {
+    const q = this.filterProducts(query);
+    return this.productModel.find(q);
   }
 
   async getOneProduct(id: string): Promise<Product> {
@@ -137,55 +138,64 @@ export class ProductService {
     return this.productModel.findByIdAndDelete(id);
   }
 
+  async softDeleteManyProducts(query: Record<string, any>): Promise<number> {
+    console.log(query);
+    return this.productModel.softDelete({ _id: { $in: query.ids } });
+  }
+
   async softDeleteProductById(query: Record<string, any>): Promise<number> {
     return this.productModel.softDelete(query);
+  }
+
+  async restoreProductById(query: Record<string, any>): Promise<number> {
+    return this.productModel.restore(query);
   }
 
   async deleteAllProducts(): Promise<QueryWithHelpers<any, any>> {
     return this.productModel.deleteMany();
   }
 
-  // private filterProducts(req) {
-  //   const query = {};
-  //   for (const propName in req.query) {
-  //     if (req.query.hasOwnProperty(propName)) {
-  //       if (
-  //         [
-  //           'name',
-  //           'description',
-  //           'price',
-  //           'quantity',
-  //           'popular',
-  //           'openReview',
-  //           'store',
-  //         ].includes(propName)
-  //       ) {
-  //         query[propName] = req.query[propName];
-  //       } else {
-  //         if (propName === 'minPrice') {
-  //           if (query['price'] === undefined) {
-  //             query['price'] = {};
-  //           }
-  //           query.price['$gt'] = req.query[propName];
-  //         } else if (propName === 'maxPrice') {
-  //           if (query['price'] === undefined) {
-  //             query['price'] = {};
-  //           }
-  //           query.price['$lt'] = req.query[propName];
-  //         } else if (propName === 'minQuantity') {
-  //           if (query['quantity'] === undefined) {
-  //             query['quantity'] = {};
-  //           }
-  //           query['quantity']['$gt'] = req.query[propName];
-  //         } else if (propName === 'maxQuantity') {
-  //           if (query['quantity'] === undefined) {
-  //             query['quantity'] = {};
-  //           }
-  //           query['quantity']['$lt'] = req.query[propName];
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return query;
-  // }
+  private filterProducts(req) {
+    const query = {};
+    for (const propName in req) {
+      if (req.hasOwnProperty(propName)) {
+        if (
+          [
+            'name',
+            'description',
+            'price',
+            'quantity',
+            'popular',
+            'openReview',
+            'store',
+          ].includes(propName)
+        ) {
+          query[propName] = req[propName];
+        } else {
+          if (propName === 'minPrice') {
+            if (query['price'] === undefined) {
+              query['price'] = {};
+            }
+            query['price']['$gt'] = req[propName];
+          } else if (propName === 'maxPrice') {
+            if (query['price'] === undefined) {
+              query['price'] = {};
+            }
+            query['price']['$lt'] = req[propName];
+          } else if (propName === 'minQuantity') {
+            if (query['quantity'] === undefined) {
+              query['quantity'] = {};
+            }
+            query['quantity']['$gt'] = req[propName];
+          } else if (propName === 'maxQuantity') {
+            if (query['quantity'] === undefined) {
+              query['quantity'] = {};
+            }
+            query['quantity']['$lt'] = req[propName];
+          }
+        }
+      }
+    }
+    return query;
+  }
 }

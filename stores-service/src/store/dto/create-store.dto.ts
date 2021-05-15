@@ -1,5 +1,5 @@
 import { IsMongoId, IsNotEmpty, ValidationArguments } from 'class-validator';
-import { isRequired, isNotMongoId } from '../error/error-messages';
+import { isRequired, isNotMongoId } from '@webipie/common';
 
 export class CreateStoreDto {
   @IsNotEmpty({

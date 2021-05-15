@@ -10,6 +10,7 @@ export interface Store extends Document {
   storeType: string;
   contact: Contact;
   template: Template;
+  creationDate: Date;
 }
 
 class Contact {

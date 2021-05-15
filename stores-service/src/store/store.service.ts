@@ -1,4 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Store } from './interfaces/store.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
@@ -33,7 +37,7 @@ export class StoreService {
     const { template: templateId } = storeDTO;
     const template = await this.templateService.getOneTemplate(templateId);
     if (!template) {
-      throw new HttpException('Template Not Found', HttpStatus.NOT_FOUND);
+      throw new NotFoundException('Template Not Found');
     }
     delete storeDTO.template;
     const storeToBe = {
@@ -48,11 +52,9 @@ export class StoreService {
       store = await new this.storeModel(storeToBe);
       await store.save();
     } catch (e) {
-      console.log(e);
-      throw new HttpException(
-        { message: e.message, field: e.keyPattern, value: e.keyValue },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new InternalServerErrorException({
+        message: e.message,
+      });
     }
     return store;
   }
@@ -60,7 +62,7 @@ export class StoreService {
   async editOneStore(id: string, storeDTO: UpdateStoreDto): Promise<Store> {
     const store = await this.storeModel.findById(id).populate('template');
     if (!store) {
-      throw new HttpException('Store Not Found', HttpStatus.NOT_FOUND);
+      throw new NotFoundException('Store Not Found');
     }
     return this.storeModel.findByIdAndUpdate(id, storeDTO, {
       new: true,

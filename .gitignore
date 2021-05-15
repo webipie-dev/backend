@@ -1,13 +1,17 @@
 products-service/node_modules
 orders-service/node_modules
 users-service/node_modules
-
 stores-service/dist
 stores-service/node_modules
 stores-service/src/config
 
 products-service/dist
 products-service/src/config
+common/node_modules
+common/build
+.idea
+
+
 # compiled output
 /dist
 /node_modules

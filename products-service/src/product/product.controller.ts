@@ -14,6 +14,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { EditProductDto } from './dto/edit-product.dto';
 import mongodb from 'mongodb';
 import { QueryWithHelpers } from 'mongoose';
+import { IdParam } from '@webipie/common';
 import { AddReviewDto } from './dto/add-review.dto';
 
 @Controller('product')
@@ -22,12 +23,12 @@ export class ProductController {
 
   @Get('')
   async getAll(@Query() query): Promise<Product[]> {
-    return await this.productService.getAllProducts();
+    return await this.productService.getAllProducts(query);
   }
 
   @Get('/:id')
-  async getOne(@Param('id') id: string): Promise<Product> {
-    return await this.productService.getOneProduct(id);
+  async getOne(@Param() param: IdParam): Promise<Product> {
+    return await this.productService.getOneProduct(param.id);
   }
 
   @Post('')
@@ -37,34 +38,39 @@ export class ProductController {
 
   @Post('review/:id')
   async addReview(
-    @Param('id') id: string,
+    @Param() param: IdParam,
     @Body() reviewDTO: AddReviewDto,
   ): Promise<QueryWithHelpers<any, any>> {
-    return await this.productService.addReview(id, reviewDTO);
+    return await this.productService.addReview(param.id, reviewDTO);
   }
 
   @Patch('/:id')
   async editOne(
-    @Param('id') id: string,
+    @Param() param: IdParam,
     @Body() editDTO: EditProductDto,
   ): Promise<mongodb.BulkWriteOpResultObject | void> {
-    return await this.productService.editOneProduct(id, editDTO);
+    return await this.productService.editOneProduct(param.id, editDTO);
   }
 
   @Delete('/delete/soft/:id')
-  async softDeleteProductById(@Param('id') id: string): Promise<number> {
-    return await this.productService.softDeleteProductById({ _id: id });
+  async softDeleteProductById(@Param() param: IdParam) {
+    return await this.productService.softDeleteProductById({ _id: param.id });
+  }
+
+  @Delete('/delete/many')
+  async softDeleteManyProducts(@Body() ids: string[]) {
+    return await this.productService.softDeleteManyProducts(ids);
   }
 
   @Delete('/delete/:id')
-  async deleteOne(@Param('id') id: string): Promise<Product> {
-    return await this.productService.deleteProductById(id);
+  async deleteOne(@Param() param: IdParam): Promise<Product> {
+    return await this.productService.deleteProductById(param.id);
   }
 
-  // @Get('/restore/:id')
-  // async restoreProductById(@Param() param: IdParam): Promise<Product> {
-  //   return await this.productService.restoreProductById(param.id);
-  // }
+  @Get('/restore/:id')
+  async restoreProductById(@Param() param: IdParam) {
+    return await this.productService.restoreProductById({ _id: param.id });
+  }
 
   @Delete('/delete')
   async deleteAll(): Promise<QueryWithHelpers<any, any>> {

@@ -20,7 +20,7 @@ const ProductSchema = new mongoose.Schema(
     popular: { type: Boolean, required: false, default: false },
     openReview: { type: Boolean, required: false, default: true },
     reviews: [reviewSchema],
-    store: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', default: '' },
+    store: { type: mongoose.Schema.Types.ObjectId, ref: 'Store' },
   },
   {
     toJSON: {

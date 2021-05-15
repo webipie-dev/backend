@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { Store } from '../interfaces/store.interface';
 
@@ -19,5 +19,10 @@ export class StoreController {
   @Post('')
   async addOne(): Promise<Store> {
     return await this.storeService.addOneStore();
+  }
+
+  @Delete('/:id')
+  async deleteOne(@Param('id') id: string) {
+    return await this.storeService.softDelete({ _id: id });
   }
 }
