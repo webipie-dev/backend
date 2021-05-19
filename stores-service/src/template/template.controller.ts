@@ -19,8 +19,8 @@ export class TemplateController {
   constructor(private readonly templateService: TemplateService) {}
 
   @Get('')
-  async getAllTemplates(@Query() query?): Promise<Template[]> {
-    return await this.templateService.getAllTemplates(query);
+  async getFilteredTemplates(@Query() query?): Promise<Template[]> {
+    return await this.templateService.getFilteredTemplates(query);
   }
 
   @Get('/:id')
@@ -52,8 +52,10 @@ export class TemplateController {
   }
 
   @Delete('/delete')
-  async deleteAllTemplates(@Query() query?): Promise<Record<string, unknown>> {
-    return await this.templateService.deleteAllTemplates(query);
+  async deleteFilteredTemplates(
+    @Query() query?,
+  ): Promise<Record<string, unknown>> {
+    return await this.templateService.deleteFilteredTemplates(query);
   }
 
   @Delete('/delete/:id')
@@ -67,7 +69,7 @@ export class TemplateController {
   }
 
   @Get('/restore/:id')
-  async restoreById(@Param() param: IdParam): Promise<Template> {
+  async restoreTemplateById(@Param() param: IdParam): Promise<Template> {
     return await this.templateService.restoreTemplateById(param.id);
   }
 }

@@ -58,7 +58,7 @@ export class ProductController {
   }
 
   @Delete('/delete/many')
-  async softDeleteManyProducts(@Body() ids: string[]) {
+  async softDeleteManyProducts(@Body() ids: Record<string, any>) {
     return await this.productService.softDeleteManyProducts(ids);
   }
 

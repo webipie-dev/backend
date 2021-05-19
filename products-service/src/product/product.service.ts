@@ -139,7 +139,6 @@ export class ProductService {
   }
 
   async softDeleteManyProducts(query: Record<string, any>): Promise<number> {
-    console.log(query);
     return this.productModel.softDelete({ _id: { $in: query.ids } });
   }
 

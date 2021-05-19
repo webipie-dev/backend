@@ -16,26 +16,26 @@ export class EditProductDto {
     message: (validationData: ValidationArguments) =>
       isRequired(validationData.property),
   })
-  name: string;
+  name?: string;
 
   @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 
   @IsOptional()
   @IsNumber()
-  price: number;
+  price?: number;
 
   @IsOptional()
   @IsNumber()
-  quantity: number;
+  quantity?: number;
 
   @IsOptional()
   @IsArray({
     message: (validationData: ValidationArguments) =>
       isNotArray(validationData.property),
   })
-  imgs: string[];
+  imgs?: string[];
 
   @IsOptional()
   @IsString()
@@ -43,20 +43,20 @@ export class EditProductDto {
     message: (validationData: ValidationArguments) =>
       isRequired(validationData.property),
   })
-  status: string;
+  status?: string;
 
   @IsOptional()
   @IsBoolean()
-  popular: boolean;
+  popular?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  openReview: boolean;
+  openReview?: boolean;
 
   @IsOptional()
   @IsArray({
     message: (validationData: ValidationArguments) =>
       isNotArray(validationData.property),
   })
-  deletedImages: string[];
+  deletedImages?: string[];
 }
