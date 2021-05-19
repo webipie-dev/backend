@@ -7,7 +7,7 @@ import { UpdateTemplateDto } from './dto/update-template.dto';
 describe('TemplateController', () => {
   let controller: TemplateController;
   const mockTemplateService = {
-    getAllTemplates: jest.fn((filters?: Record<string, any>) => {
+    getFilteredTemplates: jest.fn((filters?: Record<string, any>) => {
       return [];
     }),
     getOneTemplate: jest.fn((id: string) => {
@@ -22,7 +22,7 @@ describe('TemplateController', () => {
     editOneTemplate: jest.fn((id: string, dto: UpdateTemplateDto) => {
       return { id, ...dto };
     }),
-    deleteAllTemplates: jest.fn((filters?: Record<string, any>) => {
+    deleteFilteredTemplates: jest.fn((filters?: Record<string, any>) => {
       return {};
     }),
     deleteTemplateById: jest.fn((id: string) => {
@@ -69,10 +69,14 @@ describe('TemplateController', () => {
 
   it('should fetch filtered templates', async () => {
     const query = {};
-    expect(await controller.getAllTemplates()).toEqual([]);
-    expect(mockTemplateService.getAllTemplates).toHaveBeenCalledWith(undefined);
-    expect(await controller.getAllTemplates(query)).toEqual([]);
-    expect(mockTemplateService.getAllTemplates).toHaveBeenLastCalledWith(query);
+    expect(await controller.getFilteredTemplates()).toEqual([]);
+    expect(mockTemplateService.getFilteredTemplates).toHaveBeenCalledWith(
+      undefined,
+    );
+    expect(await controller.getFilteredTemplates(query)).toEqual([]);
+    expect(mockTemplateService.getFilteredTemplates).toHaveBeenLastCalledWith(
+      query,
+    );
   });
 
   it('should fetch deleted templates', async () => {
@@ -137,12 +141,14 @@ describe('TemplateController', () => {
 
   it('should delete filtered templates', async () => {
     const query = {};
-    expect(await controller.deleteAllTemplates(query)).toEqual({});
-    expect(mockTemplateService.deleteAllTemplates).toHaveBeenCalledWith(query);
-    expect(await controller.deleteAllTemplates()).toEqual({});
-    expect(mockTemplateService.deleteAllTemplates).toHaveBeenLastCalledWith(
-      undefined,
+    expect(await controller.deleteFilteredTemplates(query)).toEqual({});
+    expect(mockTemplateService.deleteFilteredTemplates).toHaveBeenCalledWith(
+      query,
     );
+    expect(await controller.deleteFilteredTemplates()).toEqual({});
+    expect(
+      mockTemplateService.deleteFilteredTemplates,
+    ).toHaveBeenLastCalledWith(undefined);
   });
 
   it('should delete template by id', async () => {
@@ -155,7 +161,7 @@ describe('TemplateController', () => {
     );
   });
 
-  it('should delete soft delete template by id', async () => {
+  it('should soft delete template by id', async () => {
     const idParam = { id: 'abc' };
     expect(await controller.softDeleteTemplateById(idParam)).toEqual({
       id: idParam.id,
@@ -167,7 +173,7 @@ describe('TemplateController', () => {
 
   it('should restore a soft deleted template', async () => {
     const idParam = { id: 'abc' };
-    expect(await controller.restoreById(idParam)).toEqual({
+    expect(await controller.restoreTemplateById(idParam)).toEqual({
       id: idParam.id,
     });
     expect(mockTemplateService.restoreTemplateById).toHaveBeenCalledWith(
