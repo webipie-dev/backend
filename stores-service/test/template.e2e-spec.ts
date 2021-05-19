@@ -45,7 +45,7 @@ describe('Template Controller (e2e)', () => {
     await app.init();
   });
 
-  it('/template (POST), should create a template', async () => {
+  it('/template (POST), should create a template and return 201', async () => {
     const response = request(app.getHttpServer())
       .post('/template')
       .send(createTemplateDto);
@@ -148,8 +148,43 @@ describe('Template Controller (e2e)', () => {
     expect(template.status).toEqual(200);
   });
 
-  it('/template (PATCH), should edit a product', async () => {
+  it('/template/:id (PATCH), should edit a product', async () => {
+    const { text: template } = await request(app.getHttpServer())
+      .post('/template')
+      .send(createTemplateDto);
 
+    const { text: updatedTemplate, status } = await request(app.getHttpServer())
+      .patch('/template/' + JSON.parse(template).id)
+      .send({ name: 'new name' });
+
+    expect(JSON.parse(updatedTemplate).name).toEqual('new name');
+    expect(status).toEqual(200);
+  });
+
+  it('/template/:id (PATCH), should throw 400 when provided with erroneous id or dto', async () => {
+    const { text: template } = await request(app.getHttpServer())
+      .post('/template')
+      .send(createTemplateDto);
+
+    const { text: emptyArrayError, status: emptyArrayStatus } = await request(
+      app.getHttpServer(),
+    )
+      .patch('/template/' + JSON.parse(template).id)
+      .send({ colorChartOptions: [] });
+    expect(emptyArrayStatus).toEqual(400);
+    expect(JSON.parse(emptyArrayError).message).toEqual([
+      'minimum size of 1 is required in colorChartOptions',
+    ]);
+
+    const { text: wrongIdError, status: wrongIdStatus } = await request(
+      app.getHttpServer(),
+    )
+      .patch('/template/wrongId')
+      .send({});
+    expect(wrongIdStatus).toEqual(400);
+    expect(JSON.parse(wrongIdError).message).toEqual([
+      'id should be a Mongo ID',
+    ]);
   });
 
   afterEach(async () => {
