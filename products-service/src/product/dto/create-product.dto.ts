@@ -26,6 +26,7 @@ export class CreateProductDto {
   price: number;
 
   @IsNumber()
+
   @IsNotEmpty({
     message: (validationData: ValidationArguments) =>
       isRequired(validationData.property),

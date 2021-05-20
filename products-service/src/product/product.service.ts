@@ -81,14 +81,14 @@ export class ProductService {
     await bulkQueries.push({
       updateOne: {
         filter: { _id: id },
-        update: { $addToSet: { imgs: { $each: imgs } } },
+        update: { $addToSet: { imgs: { $each: imgs || [] } } },
       },
     });
     // deleting images
     await bulkQueries.push({
       updateOne: {
         filter: { _id: id },
-        update: { $pull: { imgs: { $in: deletedImages } } },
+        update: { $pull: { imgs: { $in: deletedImages || [] } } },
       },
     });
 
