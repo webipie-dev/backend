@@ -138,15 +138,15 @@ export class ProductService {
     return this.productModel.findByIdAndDelete(id);
   }
 
-  async softDeleteManyProducts(query: Record<string, any>): Promise<number> {
+  async softDeleteManyProducts(query: Record<string, any>): Promise<any> {
     return this.productModel.softDelete({ _id: { $in: query.ids } });
   }
 
-  async softDeleteProductById(query: Record<string, any>): Promise<number> {
+  async softDeleteProductById(query: Record<string, any>): Promise<any> {
     return this.productModel.softDelete(query);
   }
 
-  async restoreProductById(query: Record<string, any>): Promise<number> {
+  async restoreProductById(query: Record<string, any>): Promise<any> {
     return this.productModel.restore(query);
   }
 
