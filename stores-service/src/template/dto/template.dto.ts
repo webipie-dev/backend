@@ -1,4 +1,10 @@
-import { IsOptional } from 'class-validator';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsOptional,
+  ValidationArguments,
+} from 'class-validator';
+import { isNotArray, minSizeRequired } from '@webipie/common';
 
 export class TemplateDto {
   @IsOptional()
@@ -16,11 +22,27 @@ export class TemplateDto {
   readonly colorChart: Record<string, any>;
 
   @IsOptional()
+  @IsArray({
+    message: (validationData: ValidationArguments) =>
+      isNotArray(validationData.property),
+  })
+  @ArrayMinSize(1, {
+    message: (validationData: ValidationArguments) =>
+      minSizeRequired(validationData.property),
+  })
   readonly colorChartOptions: Record<string, any>[];
 
   @IsOptional()
   readonly font: string;
 
   @IsOptional()
+  @IsArray({
+    message: (validationData: ValidationArguments) =>
+      isNotArray(validationData.property),
+  })
+  @ArrayMinSize(1, {
+    message: (validationData: ValidationArguments) =>
+      minSizeRequired(validationData.property),
+  })
   readonly fontOptions: string[];
 }
