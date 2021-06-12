@@ -1,0 +1,61 @@
+version: 2.1
+orbs:
+  node: circleci/node@3.0.0
+
+parameters:
+  trigger:
+    type: boolean
+    default: true
+  # list all services parameters here, initialized to false
+
+jobs:
+  # This job isresponsible for detecting the changed directories
+  trigger-workflow:
+    steps:
+      - checkout
+      - run:
+          name: Search the changed directories
+          command: chmod +x .circleci/search_directories.sh && ./circleci/search_directories.sh
+
+  # This job is responsibe for changing into the changed directory, building and running tests
+  build-and-test:
+    parameters:
+      package_name:
+        type: string
+  
+    executor:
+      name: node/default
+
+    working_directory: ~/backend/<< parameters.package_name >>
+
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          command: npm run test
+
+  # This job is responsible for deploying using skaffold.yaml
+  deploy:
+    working_directory: ~/backend/
+    
+    steps:
+      - run: skaffold dev
+
+
+workflows:
+  ci:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - trigger-workflows
+      
+  build-and-test:
+    jobs:
+      - build-and-test
+    requires:
+      - trigger-workflow
+
+  deploy:
+    jobs:
+      - deploy
+    requires:
+      - build-and-test    
