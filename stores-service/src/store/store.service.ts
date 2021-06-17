@@ -6,7 +6,7 @@ import {
 import { Store } from './interfaces/store.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
-import { CreateStoreDto } from './dto/ceate-store.dto';
+import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { TemplateService } from '../template/template.service';
 

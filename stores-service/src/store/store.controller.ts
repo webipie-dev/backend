@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { StoreService } from './store.service';
-import { CreateStoreDto } from './dto/ceate-store.dto';
+import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { Store } from './interfaces/store.interface';
 import { IdParam } from '@webipie/common';
