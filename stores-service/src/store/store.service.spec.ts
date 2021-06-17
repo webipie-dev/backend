@@ -75,7 +75,6 @@ describe('StoreService', () => {
     try {
       await service.addOneStore(createStoreDto);
     } catch (e) {
-
       expect(e).toBeInstanceOf(NotFoundException);
       expect(e.message).toEqual('Template Not Found');
     }
