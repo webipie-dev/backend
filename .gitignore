@@ -9,7 +9,6 @@ products-service/dist
 products-service/src/config
 common/node_modules
 common/build
-common
 .idea
 
 
