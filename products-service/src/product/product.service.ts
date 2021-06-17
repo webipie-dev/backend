@@ -12,6 +12,9 @@ import { EditProductDto } from './dto/edit-product.dto';
 import mongodb from 'mongodb';
 import { QueryWithHelpers } from 'mongoose';
 import { AddReviewDto } from './dto/add-review.dto';
+import { Publisher } from '@nestjs-plugins/nestjs-nats-streaming-transport';
+import { ProductCreatedEvent } from 'src/events/product-created.event';
+import { Subjects } from 'src/events/subjects.enum';
 
 @Injectable()
 export class ProductService {
@@ -19,7 +22,24 @@ export class ProductService {
     @InjectModel('Product')
     private readonly productModel: SoftDeleteModel<Product>,
     private storeService: StoreService,
+    private publisher: Publisher
   ) {}
+
+  emit() {
+    const event : ProductCreatedEvent = {
+      subject: Subjects.PRODUCT_CREATED,
+      data : {
+        id: 'id',
+        price: 100,
+        stock: 20,
+        image:'image',
+        storeId: 'storeId'
+      }
+    }
+    this.publisher.emit<string, ProductCreatedEvent>('product:created', event).subscribe(
+      response => console.log('Product Created Event Emitted')
+    )
+  }
 
   async getAllProducts(query): Promise<Product[]> {
     const q = this.filterProducts(query);
@@ -45,9 +65,21 @@ export class ProductService {
       store: productDTO.storeId,
     });
 
-    return await product.save().catch((err) => {
-      throw new InternalServerErrorException(err.message);
-    });
+    await product.save();
+    const productCreatedEvent : ProductCreatedEvent = {
+      subject: Subjects.PRODUCT_CREATED,
+      data: {
+        id: product.id,
+        stock: product.quantity,
+        price: product.price,
+        storeId: product.store,
+        image: product.imgs[0]
+      }
+    }
+    this.publisher.emit<string, ProductCreatedEvent>(productCreatedEvent.subject, productCreatedEvent).subscribe(
+      response => console.log('Product Created Event Emitted')
+    )
+    return product;
   }
 
   async editOneProduct(

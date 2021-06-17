@@ -21,8 +21,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs-plugins/nestjs-nats-streaming-transport": "^1.0.19",
     "@nestjs/common": "^7.5.1",
     "@nestjs/core": "^7.5.1",
+    "@nestjs/microservices": "^7.6.17",
     "@nestjs/mongoose": "^7.2.4",
     "@nestjs/platform-express": "^7.5.1",
     "@webipie/common": "^1.0.7",

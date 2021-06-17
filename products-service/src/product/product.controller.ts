@@ -17,13 +17,19 @@ import { QueryWithHelpers } from 'mongoose';
 import { IdParam } from '@webipie/common';
 import { AddReviewDto } from './dto/add-review.dto';
 
-@Controller('product')
+@Controller('api/products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
+
 
   @Get('')
   async getAll(@Query() query): Promise<Product[]> {
     return await this.productService.getAllProducts(query);
+  }
+
+  @Get('emit')
+  emit() {
+    this.productService.emit();
   }
 
   @Get('/:id')
