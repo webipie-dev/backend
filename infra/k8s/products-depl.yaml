@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: orders-depl
+  name: products-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: orders
+      app: products
   template:
     metadata:
       labels:
-        app: orders
+        app: products
     spec:
       containers:
-        - name: orders
-          image: webipie/orders
+        - name: products
+          image: webipie/products
           env:
             - name: DATABASE_URI            
-              value: 'mongodb://orders-mongo-srv:27017/orders-service'
+              value: 'mongodb://products-mongo-srv:27017/products-service'
             - name: NATS_CLIENT_ID
               valueFrom:
                 fieldRef:
@@ -30,12 +30,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: orders-srv
+  name: products-srv
 spec:
   selector:
-    app: orders
+    app: products
   ports:
-    - name: orders
+    - name: products
       protocol: TCP
       port: 3000
       targetPort: 3000

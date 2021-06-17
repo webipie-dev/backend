@@ -5,6 +5,8 @@ import { ProductDto } from "../models/dto/product.dto";
 import { StoreDto } from "../models/dto/store.dto";
 import { UpdateOrderDto } from "../models/dto/update-order.dto";
 import { IsMongoId } from "class-validator";
+import { EventPattern, Payload, Ctx } from "@nestjs/microservices";
+import { NatsStreamingContext } from '@nestjs-plugins/nestjs-nats-streaming-transport';
 
 @Controller('api/orders')
 export class OrdersController {
@@ -49,5 +51,17 @@ export class OrdersController {
                     @Param('storeId') storeId: string,
                     @Body() updatedOrder: UpdateOrderDto) {
     return this.ordersService.updateOrder(id, updatedOrder,storeId);
+  }
+
+  @EventPattern('product:created')
+  public async productCreated(@Payload() data , @Ctx() context: NatsStreamingContext) {
+    console.log(`[Orders Service] -- Received event: ${data} `);
+    context.message.ack();
+  }
+
+  @EventPattern('product:updated')
+  public productUpdated(@Payload() data , @Ctx() context: NatsStreamingContext) {
+    console.log(`[Orders Service] -- Received event: ${data} `);
+    context.message.ack();
   }
 }

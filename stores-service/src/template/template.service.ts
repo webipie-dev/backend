@@ -19,7 +19,9 @@ export class TemplateService {
   async getFilteredTemplates(
     filters?: Record<string, unknown>,
   ): Promise<Template[]> {
-    return await this.templateModel.find(filters).catch(error => { throw new InternalServerErrorException(error.message)});
+    return await this.templateModel.find(filters).catch((error) => {
+      throw new InternalServerErrorException(error.message);
+    });
   }
 
   async getOneTemplate(id: string): Promise<Template> {

@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StoreController } from './store.controller';
 import { StoreService } from './store.service';
-import { CreateStoreDto } from './dto/ceate-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
+import { CreateStoreDto } from './dto/create-store.dto';
 
 describe('StoreController', () => {
   let controller: StoreController;

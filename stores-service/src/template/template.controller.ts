@@ -52,7 +52,9 @@ export class TemplateController {
   }
 
   @Delete('/delete')
-  async deleteFilteredTemplates(@Query() query?): Promise<Record<string, unknown>> {
+  async deleteFilteredTemplates(
+    @Query() query?,
+  ): Promise<Record<string, unknown>> {
     return await this.templateService.deleteFilteredTemplates(query);
   }
 

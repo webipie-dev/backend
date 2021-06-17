@@ -71,7 +71,7 @@ describe('StoreService', () => {
     expect(templateServide).toBeDefined();
   });
 
-  it('should throw an error when inserting an erroneous template it', async () => {
+  it('should throw an error when inserting an erroneous template id', async () => {
     try {
       await service.addOneStore(createStoreDto);
     } catch (e) {
