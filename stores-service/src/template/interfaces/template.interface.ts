@@ -12,4 +12,6 @@ export interface Template extends mongoose.Document {
   colorChartOptions: [Record<string, any>];
   font: string;
   fontOptions: [string];
+  isDeleted: boolean;
+  deletedAt: Date | null;
 }

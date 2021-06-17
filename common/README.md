@@ -27,12 +27,14 @@ export class CreateStoreDto {
       isRequired(validationData.property),
   })
   readonly name: string;
-  // ...
+  // ... 
 }
 
 /**
     cats.controller.ts
 **/
+import { IdParam } from '@webipie/common';
+
 @Get('/:id')
   async getOneCat(@Param() param: IdParam): Promise<Store> {
     return await this.catService.getOneCat(param.id);

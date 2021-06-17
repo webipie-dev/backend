@@ -11,6 +11,8 @@ export interface Store extends Document {
   contact: Contact;
   template: Template;
   creationDate: Date;
+  isDeleted: boolean;
+  deletedAt: Date;
 }
 
 class Contact {
